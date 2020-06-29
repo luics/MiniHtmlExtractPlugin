@@ -1,24 +1,58 @@
 # ts-react-node-template
 
-## Installation
+## Installing
 
 ```bash
-npm i
-npm start
+npm install --save-dev MiniHtmlExtractPlugin
 ```
 
-## Features
+## Usage
 
-### TODO:
+```js
+...
+plugins: [
+  // all entries, '[name].html' found in '[output.path]'
+  new MiniHtmlExtractPlugin(),
 
-- MiniHtmlExtractPlugin
-  - // support loader
-  - independent npm package
-    - //ln -s ../MiniHtmlExtractPlugin ./node_modules/MiniHtmlExtractPlugin
-    - //plain js
-    - //npm-link/
-    - //ts
-    - add test/jest
-    - npm publish
+  // specific entries
+  new MiniHtmlExtractPlugin({ entries: ['app', 'subapp'] }),
 
-### Done
+  // filename: '[name].[ext]?[contenthash]'
+  new MiniHtmlExtractPlugin({ filename: `[name]-filename.html`, entries: ['app'] }),
+
+  // template content with builtin placeholders: '[entryName]', '[entryJsFilename]'
+  new MiniHtmlExtractPlugin({
+    filename: `[name]-template.html`, entries: ['app'],
+    template: '<html><body>[entryName]<div id="root"></div><script src="[entryJsFilename]"></script></body></html>'
+  }),
+
+  // template content with custom placeholders: '[xxx]', '[yyy]' ...
+  new MiniHtmlExtractPlugin({
+    filename: `[name]-template-placeholder.html`, entries: ['app'],
+    template: '<html><body>[xxx][yyy][yyy]<div id="root"></div><script src="[entryJsFilename]"></script></body></html>',
+    placeholder: { xxx: 'a', yyy: 'p' }
+  }),
+
+  // template file(absolute path) with builtin placeholders: '[entryName]', '[entryJsFilename]'
+  new MiniHtmlExtractPlugin({
+    filename: `[name]-templatePath.html`, entries: ['app'],
+    templatePath: path.resolve(__dirname, './test/template.html')
+  }),
+
+  // template file(absolute path) with custom placeholders: '[xxx]', '[yyy]' ...
+  new MiniHtmlExtractPlugin({
+    filename: `[name]-templatePath-placeholder.html`, entries: ['app'],
+    templatePath: path.resolve(__dirname, './test/template-placeholder.html'),
+    placeholder: { xxx: 'a', yyy: 'p' }
+  }),
+],
+...
+```
+
+## Building
+
+```bash
+npm install
+npm start
+npm test
+```

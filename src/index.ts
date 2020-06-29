@@ -1,21 +1,38 @@
 // import validateOptions from 'schema-utils';
+import fs from 'fs';
 import { compiler, compilation } from 'webpack';
-import { Options, name, schema, placehold, getFilename } from './util';
-import tpl from './index.html';
+import { name, placeholder, getFilename } from './util';
+import defaultTemplate from './index.html';
 
 export default class Plugin {
 
-  constructor(public options: Options) {
-    if (!options.filename) options.filename = schema.properties.filename.default;
-    if (!options.entries) options.entries = [];
+  constructor({
+    filename = '[name].html',
+    entries = [],
+    template = defaultTemplate,
+    templatePath = '',
+    placeholder = {},
+  } = {}) {
+    this.filename = filename;
+    this.entries = entries;
+    this.template = template;
+    this.templatePath = templatePath;
+    this.placeholder = placeholder;
+    if (this.templatePath) this.template = fs.readFileSync(this.templatePath).toString();
     // validateOptions(schema, options);
   }
+
+  filename: string;
+  entries: string[];
+  template: string;
+  templatePath: string;
+  placeholder: { [key: string]: string };
 
   apply(compiler: compiler.Compiler) {
     compiler.hooks.emit.tapAsync(name, (compilation: compilation.Compilation, callback) => {
       const compilationEntries = Object.keys((compilation as any).options.entry);
-      let entries = this.options.entries;
-      if (!entries) entries = compilationEntries;
+      let entries = this.entries;
+      if (!entries.length) entries = compilationEntries;
       else {
         entries.forEach(entry => {
           if (!compilationEntries.includes(entry)) throw new Error(`'${entry}' not exists in webpack config`);
@@ -26,16 +43,16 @@ export default class Plugin {
         let entry = entries?.find(entry => assetKey.startsWith(`${entry}.js`));
         if (!entry) return;
 
-        const entryJsFilename = assetKey;
-        const html = tpl
-          .replace(placehold.title, entry)
-          .replace(placehold.scriptSrc, entryJsFilename);
-        const entryHtmlFilename = getFilename(
-          this.options.filename || schema.properties.filename.default,
-          { name: entry, ext: 'html', content: Buffer.from(html) }
-        );
+        let html = this.template
+          .replace(placeholder.entryName, entry)
+          .replace(placeholder.entryJsFilename, assetKey);
 
-        compilation.assets[entryHtmlFilename] = { source: () => html, size: () => html.length };
+        Object.keys(this.placeholder).forEach(key => {
+          html = html.replace(new RegExp(`\\[${key}\\]`, 'gi'), this.placeholder[key]);
+        });
+
+        const htmlFilename = getFilename(this.filename, { name: entry, ext: 'html', content: Buffer.from(html) });
+        compilation.assets[htmlFilename] = { source: () => html, size: () => html.length };
       });
 
       callback();

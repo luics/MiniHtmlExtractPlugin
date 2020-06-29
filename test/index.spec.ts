@@ -5,13 +5,41 @@ import assert from 'assert';
 
 describe('Plugin', () => {
 
-  const entries = ['app', 'subapp'];
   const buildPath = path.resolve(__dirname, '../build');
+  const templateRe = /^<html><body>app<div id=\"root\"><\/div><script src=\"app.js\?(.+?)\"><\/script><\/body><\/html>$/;
 
-  it('html file exists', () => {
-    entries.forEach(entry => {
-      assert.ok(fs.existsSync(path.resolve(buildPath, `${entry}.html`)));
-    });
+  it('empty params', () => {
+    assert.ok(fs.existsSync(path.resolve(buildPath, 'app.html')));
+    assert.ok(fs.existsSync(path.resolve(buildPath, 'subapp.html')));
+    assert.ok(fs.existsSync(path.resolve(buildPath, 'main.html')));
+  });
+
+  it('filename', () => {
+    assert.ok(fs.existsSync(path.resolve(buildPath, 'app-filename.html')));
+  });
+
+  it('template', () => {
+    const p = path.resolve(buildPath, 'app-template.html');
+    assert.ok(fs.existsSync(p));
+    assert.ok(templateRe.test(fs.readFileSync(p).toString()));
+  });
+
+  it('template placeholder', () => {
+    const p = path.resolve(buildPath, 'app-template-placeholder.html');
+    assert.ok(fs.existsSync(p));
+    assert.ok(templateRe.test(fs.readFileSync(p).toString()));
+  });
+
+  it('templatePath', () => {
+    const p = path.resolve(buildPath, 'app-templatePath.html');
+    assert.ok(fs.existsSync(p));
+    assert.ok(templateRe.test(fs.readFileSync(p).toString()));
+  });
+
+  it('templatePath placeholder', () => {
+    const p = path.resolve(buildPath, 'app-templatePath-placeholder.html');
+    assert.ok(fs.existsSync(p));
+    assert.ok(templateRe.test(fs.readFileSync(p).toString()));
   });
 
 });

@@ -1,20 +1,15 @@
 {
   "name": "MiniHtmlExtractPlugin",
   "version": "0.1.0",
-  "description": "Generate HTML file(s) for specific entry file(s).",
-  "main": "./dist",
+  "description": "Generate HTML wrapper file(s) for specific entry file(s).",
+  "main": "./dist/index",
   "scripts": {
-    "postinstall": "ln -s -f ../test node_modules/@test",
     "start": "run-s build:production",
-    "start:dev": "nodemon --exec 'run-s clear build:development' --watch ./ --ext js,ts,tsx --ignore ./build,./bin",
     "build:development": "webpack --mode development",
     "build:production": "webpack --mode production",
-    "test:dev": "nodemon --watch ./ --ext ts --delay 0 --exec 'run-s clear test'",
-    "test": "run-s build:production test:clean test:build test:mocha",
-    "test:clean": "rm -rf ./build && mkdir ./build",
-    "test:build": "webpack --mode development --config webpack.config.test.js",
-    "test:mocha": "mocha -r ts-node/register test/**/*.spec.ts",
-    "clear": "printf \"\\33c\\e[3J\""
+    "test": "run-s build:production test:build test:mocha",
+    "test:build": "rm -rf ./build && mkdir ./build && webpack --mode development --config webpack.config.test.js",
+    "test:mocha": "mocha -r ts-node/register test/**/*.spec.ts"
   },
   "author": "luics.xu@gmail.com",
   "license": "MIT",

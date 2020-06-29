@@ -2,16 +2,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "node **/*.js",
-      "program": "${workspaceFolder}/test/test.js",
-      "request": "launch",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "type": "pwa-node"
-    },
-    
-    {
       "name": "build",
       "type": "node",
       "request": "launch",

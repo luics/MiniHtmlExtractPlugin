@@ -1,10 +1,6 @@
 import { getHashDigest } from 'loader-utils';
-// import { Schema } from 'schema-utils/declarations/validate';
 
 export const name = 'MiniHtmlExtractPlugin';
-
-
-export type Options = { filename?: string, entries?: string[] };
 
 /**
    * @param {string} formatter '[name].[ext]?[query]#[contenthash]'
@@ -23,18 +19,18 @@ export function getFilename(formatter: string, { name = '', ext = '', query = ''
     ;
 };
 
-export const schema = {
-  type: 'object',
-  properties: {
-    filename: {
-      type: 'string',
-      default: '[name].html',
-    },
-    entries: {
-      type: 'array',
-    }
-  }
-};
+// export const schema = {
+//   type: 'object',
+//   properties: {
+//     filename: {
+//       type: 'string',
+//       default: '[name].html',
+//     },
+//     entries: {
+//       type: 'array',
+//     }
+//   }
+// };
 
 export const filename = {
   name: /\[name\]/gi,
@@ -43,7 +39,7 @@ export const filename = {
   query: /\[query\]/gi,
 };
 
-export const placehold = {
-  title: /\[title\]/gi,
-  scriptSrc: /\[script-src\]/gi,
+export const placeholder = {
+  entryName: /\[entryName\]/gi,
+  entryJsFilename: /\[entryJsFilename\]/gi,
 };
