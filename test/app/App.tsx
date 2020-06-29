@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { log } from '@test/util';
 import Block from './BLock';
-import './App.scss';
 
 class App extends React.Component {
   render() {

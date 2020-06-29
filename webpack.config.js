@@ -1,50 +1,20 @@
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const MiniHtmlExtractPlugin = require('./src');
-
-const sourceMap = false;
-const filename = (ext = '[ext]') => `[name].${ext}?[contenthash]`;
 
 module.exports = {
-  entry: {
-    app: './test/app',
-    subapp: './test/subapp',
-    main: './test',
-  },
+  target: 'node',
+  entry: { index: './src' },
   output: {
-    path: path.join(__dirname, 'build'),
-    filename: filename('js')
+    path: path.join(__dirname, 'dist'),
+    filename: '[name].js',
+    libraryTarget: "commonjs2",
   },
-  plugins: [
-    new MiniCssExtractPlugin({ filename: filename('css'), }),
-    new MiniHtmlExtractPlugin({ filename: filename('html'), entries: ['app', 'subapp'] }),
-  ],
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js'],
-  },
+  resolve: { extensions: ['.ts', '.js'] },
   module: {
     rules: [
-      { test: /\.tsx?$/i, loader: 'ts-loader' },
-      {
-        include: [path.resolve(__dirname, 'test/subapp/Subapp.tsx')], 
-        use: [
-          { loader: './src/loader', options: {} },
-        ]
-      },
-      { test: /\.scss$/i, loader: 'style-loader!css-loader!sass-loader' },
-      {
-        test: /\.(eot|ttf|woff|woff2|svg)$/i, loader: 'file-loader',
-        options: { outputPath: 'font', name: filename() },
-      },
-      {
-        test: /\.(jpg|jpeg|png|gif|webp)$/i, loader: 'file-loader',
-        options: { outputPath: 'img', name: filename() },
-      },
-      {
-        test: /(favicon\.ico)|(index\.html)$/i, loader: 'file-loader',
-        options: { outputPath: '.', name: filename() },
-      },
+      { test: /\.ts$/i, loader: 'ts-loader' },
+      { test: /\.html$/i, loader: 'raw-loader' },
     ]
   },
-  devtool: sourceMap ? 'source-map' : false,
+  devtool: false,
+  node: { fs: "empty" } // https://github.com/webpack-contrib/css-loader/issues/447#issuecomment-285598881
 };
