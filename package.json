@@ -1,9 +1,9 @@
 {
-  "name": "MiniHtmlExtractPlugin",
+  "name": "mini-html-extract-plugin",
   "author": "luics.xu@gmail.com",
   "version": "0.1.0",
   "license": "Apache-2.0",
-  "description": "Generate HTML wrapper file(s) for specific entry file(s).",
+  "description": "Generate HTML wrapper file(s) for specific entries.",
   "keywords": [
     "webpack",
     "plugin",
@@ -21,6 +21,9 @@
   "engines": {
     "node": ">=8.0.0"
   },
+  "files": [
+    "dist/"
+  ],
   "main": "./dist/index",
   "scripts": {
     "start": "run-s build:production",
@@ -28,7 +31,8 @@
     "build:production": "webpack --mode production",
     "test": "run-s build:production test:build test:mocha",
     "test:build": "rm -rf ./build && mkdir ./build && webpack --mode development --config webpack.config.test.js",
-    "test:mocha": "mocha -r ts-node/register test/**/*.spec.ts"
+    "test:mocha": "mocha -r ts-node/register test/**/*.spec.ts",
+    "publish":"npm run test && npm publish"
   },
   "devDependencies": {
     "@types/assert": "^1.5.1",

@@ -1,14 +1,18 @@
-# ts-react-node-template
+# mini-html-extract-plugin
+
+> Generate HTML wrapper file(s) for specific entries.
 
 ## Installing
 
 ```bash
-npm install --save-dev MiniHtmlExtractPlugin
+npm install --save-dev mini-html-extract-plugin
 ```
 
 ## Usage
 
 ```js
+const MiniHtmlExtractPlugin = require('mini-html-extract-plugin');
+
 ...
 plugins: [
   // all entries, '[name].html' found in '[output.path]'
