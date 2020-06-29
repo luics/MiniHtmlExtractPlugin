@@ -1,7 +1,26 @@
 {
   "name": "MiniHtmlExtractPlugin",
+  "author": "luics.xu@gmail.com",
   "version": "0.1.0",
+  "license": "Apache-2.0",
   "description": "Generate HTML wrapper file(s) for specific entry file(s).",
+  "keywords": [
+    "webpack",
+    "plugin",
+    "html",
+    "extract",
+    "wrapper"
+  ],
+  "bugs": {
+    "url": "https://github.com/luics/MiniHtmlExtractPlugin/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/luics/MiniHtmlExtractPlugin.git"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
   "main": "./dist/index",
   "scripts": {
     "start": "run-s build:production",
@@ -11,8 +30,6 @@
     "test:build": "rm -rf ./build && mkdir ./build && webpack --mode development --config webpack.config.test.js",
     "test:mocha": "mocha -r ts-node/register test/**/*.spec.ts"
   },
-  "author": "luics.xu@gmail.com",
-  "license": "MIT",
   "devDependencies": {
     "@types/assert": "^1.5.1",
     "@types/loader-utils": "^2.0.1",
