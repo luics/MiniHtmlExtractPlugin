@@ -28,6 +28,7 @@ export default class Plugin {
   templatePath: string;
   placeholder: { [key: string]: string };
 
+  // TODO: [support splitChunk](https://webpack.js.org/plugins/split-chunks-plugin/#split-chunks-example-1)
   apply(compiler: compiler.Compiler) {
     compiler.hooks.emit.tapAsync(name, (compilation: compilation.Compilation, callback) => {
       const compilationEntries = Object.keys((compilation as any).options.entry);
@@ -40,7 +41,8 @@ export default class Plugin {
       }
 
       Object.keys(compilation.assets).forEach(assetKey => {
-        let entry = entries?.find(entry => assetKey.startsWith(`${entry}.js`));
+        // TODO: match output.filename
+        let entry = entries?.find(entry => assetKey.startsWith(`${entry}.js`)); 
         if (!entry) return;
 
         let html = this.template
