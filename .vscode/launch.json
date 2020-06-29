@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "node **/*.js",
+      "program": "${workspaceFolder}/test/test.js",
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node"
+    },
+    
+    {
+      "name": "build",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/webpack-cli",
+      "args": [
+        "--config",
+        "webpack.config.js"
+      ],
+      "autoAttachChildProcesses": true,
+      "stopOnEntry": false
+    }
+  ]
+}
