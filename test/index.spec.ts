@@ -6,7 +6,7 @@ import assert from 'assert';
 describe('Plugin', () => {
 
   const buildPath = path.resolve(__dirname, '../build');
-  const templateRe = /^<html><body>app<div id=\"root\"><\/div><script src=\"app.js\?(.+?)\"><\/script><\/body><\/html>$/;
+  const templateRe = /^<html><body>app<div id=\"root\"><\/div><script src=\"(https:\/\/cdn\.com\/)?app.js\?(.+?)\"><\/script><\/body><\/html>$/;
 
   it('empty params', () => {
     assert.ok(fs.existsSync(path.resolve(buildPath, 'app.html')));

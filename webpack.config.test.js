@@ -9,7 +9,8 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, './build'),
-    filename: `[name].js?[contenthash]`
+    filename: `[name].js?[contenthash]`,
+    publicPath: `https://cdn.com/`,
   },
   plugins: [
     // all entries, '[name].html' found in '[output.path]'

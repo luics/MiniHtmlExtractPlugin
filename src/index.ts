@@ -1,6 +1,6 @@
 // import validateOptions from 'schema-utils';
 import fs from 'fs';
-import { compiler, compilation } from 'webpack';
+import webpack, { compiler, compilation } from 'webpack';
 import { name, placeholder, getFilename } from './util';
 import defaultTemplate from './index.html';
 
@@ -30,7 +30,9 @@ export default class Plugin {
 
   apply(compiler: compiler.Compiler) {
     compiler.hooks.emit.tapAsync(name, (compilation: compilation.Compilation, callback) => {
-      const compilationEntries = Object.keys((compilation as any).options.entry);
+      const options = (compilation as any).options as webpack.Configuration;
+      if (!options.entry) return;
+      const compilationEntries = Object.keys(options.entry);
       let entries = this.entries;
       if (!entries.length) entries = compilationEntries;
       else {
@@ -43,9 +45,10 @@ export default class Plugin {
         let entry = entries?.find(entry => assetKey.startsWith(`${entry}.js`));
         if (!entry) return;
 
+        const jsPath = (options.output?.publicPath ?? '') + assetKey;
         let html = this.template
           .replace(placeholder.entryName, entry)
-          .replace(placeholder.entryJsFilename, assetKey);
+          .replace(placeholder.entryJsFilename, jsPath);
 
         Object.keys(this.placeholder).forEach(key => {
           html = html.replace(new RegExp(`\\[${key}\\]`, 'gi'), this.placeholder[key]);
