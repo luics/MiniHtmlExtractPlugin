@@ -2,13 +2,15 @@ import fs from 'fs';
 import path from 'path';
 import 'mocha';
 import assert from 'assert';
+const { version: v } = require('../package.json');
 
 describe('Plugin', () => {
 
-  const buildPath = path.resolve(__dirname, '../build');
-  const templateRe = /^<html><body>app<div id=\"root\"><\/div><script src=\"(https:\/\/cdn\.com\/)?app.js\?(.+?)\"><\/script><\/body><\/html>$/;
+  const buildPath = path.resolve(__dirname, '../build', v);
+  const templateRe = new RegExp(`^<html><body>app<div id=\"root\"><\/div><script src=\"(https:\/\/cdn\.com\/)?${v}\/app.js\?(.+?)\"><\/script><\/body><\/html>$`);
 
   it('empty params', () => {
+    console.log(path.resolve(buildPath, 'app.html'));
     assert.ok(fs.existsSync(path.resolve(buildPath, 'app.html')));
     assert.ok(fs.existsSync(path.resolve(buildPath, 'subapp.html')));
     assert.ok(fs.existsSync(path.resolve(buildPath, 'main.html')));

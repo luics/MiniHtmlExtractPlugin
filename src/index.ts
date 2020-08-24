@@ -42,7 +42,11 @@ export default class Plugin {
       }
 
       Object.keys(compilation.assets).forEach(assetKey => {
-        let entry = entries?.find(entry => assetKey.startsWith(`${entry}.js`));
+        let entry = entries?.find(entry => {
+          const re = new RegExp(`(^|\/)${entry}.js`);
+          return re.test(assetKey);
+          // assetKey.indexOf(re) >= 0
+        });
         if (!entry) return;
 
         const jsPath = (options.output?.publicPath ?? '') + assetKey;
@@ -55,6 +59,7 @@ export default class Plugin {
         });
 
         const htmlFilename = getFilename(this.filename, { name: entry, ext: 'html', content: Buffer.from(html) });
+        // console.log(htmlFilename);
         compilation.assets[htmlFilename] = { source: () => html, size: () => html.length };
       });
 
