@@ -5,7 +5,7 @@ export const name = 'MiniHtmlExtractPlugin';
 /**
    * @param {string} formatter '[name].[ext]?[query]#[contenthash]'
    */
-export function getFilename(formatter: string, { name = '', ext = '', query = '', content = new Buffer('') }) {
+export function getFilename(formatter: string, { name = '', ext = '', query = '', content = Buffer.from('') }) {
   let contenthash = '';
   if (content && filename.contenthash.test(formatter)) {
     contenthash = getHashDigest(content, 'md4', 'hex', 9999);

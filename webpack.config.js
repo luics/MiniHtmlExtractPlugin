@@ -11,7 +11,7 @@ module.exports = {
   resolve: { extensions: ['.ts', '.js'] },
   module: {
     rules: [
-      { test: /\.ts$/i, loader: 'ts-loader' },
+      { test: /\.ts$/i, loader: 'ts-loader', exclude: /node_modules/ },
       { test: /\.html$/i, loader: 'raw-loader' },
     ]
   },

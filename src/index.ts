@@ -1,6 +1,6 @@
 // import validateOptions from 'schema-utils';
 import fs from 'fs';
-import webpack, { compiler, compilation } from 'webpack';
+import webpack, { Compiler, Compilation } from 'webpack';
 import { name, placeholder, getFilename } from './util';
 import defaultTemplate from './index.html';
 
@@ -28,8 +28,8 @@ export default class Plugin {
   templatePath: string;
   placeholder: { [key: string]: string };
 
-  apply(compiler: compiler.Compiler) {
-    compiler.hooks.emit.tapAsync(name, (compilation: compilation.Compilation, callback) => {
+  apply(compiler: Compiler) {
+    compiler.hooks.emit.tapAsync(name, (compilation: Compilation, callback: any) => {
       const options = (compilation as any).options as webpack.Configuration;
       if (!options.entry) return;
       const compilationEntries = Object.keys(options.entry);
@@ -60,7 +60,11 @@ export default class Plugin {
 
         const htmlFilename = getFilename(this.filename, { name: entry, ext: 'html', content: Buffer.from(html) });
         // console.log(htmlFilename);
-        compilation.assets[htmlFilename] = { source: () => html, size: () => html.length };
+        compilation.assets[htmlFilename] = {
+          source: () => html, size: () => html.length,
+          map: () => ({}), sourceAndMap: () => ({ source: '', map: (() => ({})) }), buffer: () => (Buffer.from('')),
+          updateHash: () => { }
+        };
       });
 
       callback();
